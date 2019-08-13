@@ -1,0 +1,36 @@
+post:
+  tags:
+    - Admin
+  summary: 관리자 회원가입
+  description: 관리자 계정을 생성합니다.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+          properties:
+            email:
+              type: string
+              example: by09115@outlook.kr
+              description: admin email
+            password:
+              type: string
+              example: thisIsTrulyStrongP@ssword!123
+              description: admin password(will be secured.)
+            firstname:
+              type: string
+              example: 재훈
+              description: admin's firstname
+            lastname:
+              type: string
+              example: 김
+              description: admin's lastname
+  responses:
+    '201':
+      description: account created
+    '400':
+      description: Bad request
+    '409':
+      description: conflict

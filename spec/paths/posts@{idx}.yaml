@@ -1,0 +1,78 @@
+get:
+  tags:
+    - Post
+  summary: 단일 게시글 조회
+  description: 게시글을 조회합니다.
+  parameters:
+    - name: idx
+      in: path
+      schema:
+        type: integer
+      description: 게시글 ID
+      example: 1
+      required: true
+  responses:
+    '200':
+      description: 조회 성공
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 게시글 ID
+              title:
+                type: string
+                example: 도깨비 빤스는 튼튼해요
+                description: 게시글 제목
+              contents:
+                type: string
+                example: ㅈㅅ;; 낚시글임
+                description: 게시글 내용
+              createdTime:
+                type: string
+                example: '2015-04-18 00:42:24'
+                description: 생성 날짜
+              updatedTime:
+                type: string
+                example: '2015-04-18 00:42:24'
+                description: 최근 수정일
+              approvedDateTime:
+                type: string
+                example: '2015-04-18 00:42:24'
+                description: 업로드 수락 날짜
+              uploadedLink:
+                type: string
+                example: 'https://www.facebook.com/'
+                description: 업로드 미이행시 표시되지 않음
+    '400':
+      description: Bad request - 해당하는 게시글이 존재하지 않음
+delete:
+  tags:
+    - Post
+  summary: 게시글 삭제
+  description: 게시글을 삭제합니다.
+  parameters:
+    - name: idx
+      in: path
+      schema:
+        type: integer
+      description: 게시글 ID
+      example: 1
+      required: true
+    - name: Authorization
+      in: header
+      description: 관리자의 JWT 토큰
+      example: 'Bearer {}'
+      schema:
+        type: string
+      required: true
+  responses:
+    '201':
+      description: 삭제 완료
+    '400':
+      description: Bad request - 해당하는 게시글이 존재하지 않음
+    '401':
+      description: Unauthorized - 토큰을 검증할 수 없음

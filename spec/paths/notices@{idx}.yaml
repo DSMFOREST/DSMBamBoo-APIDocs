@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Notice
+  summary: 단일 공지사항 조회
+  description: 공지사항을 조회합니다.
+  parameters:
+    - name: idx
+      in: path
+      schema:
+        type: integer
+      description: 공지사항 ID
+      example: 1
+      required: true
+  responses:
+    '200':
+      description: 조회 성공
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 공지사항 ID
+              title:
+                type: string
+                example: 대마고 대나무숲 오픈 안내
+                description: 게시글 제목
+              contents:
+                type: string
+                example: 입장료는 무료입니다! 마음껏 와서 구경하시오! 훠훠훠
+                description: 게시글 내용
+              createdTime:
+                type: string
+                example: '2015-04-18 00:42:24'
+                description: 생성 날짜
+              uploadedLink:
+                type: string
+                example: 'https://www.facebook.com/'
+                description: 업로드 미이행시 표시되지 않음
+    '400':
+      description: Bad request - 해당하는 게시글이 존재하지 않음
+delete:
+  tags:
+    - Notice
+  summary: 공지사항 삭제
+  description: 공지사항을 삭제합니다.
+  parameters:
+    - name: idx
+      in: path
+      schema:
+        type: integer
+      description: 게시글 ID
+      example: 1
+      required: true
+    - name: Authorization
+      in: header
+      description: 관리자의 JWT 토큰
+      example: 'Bearer {}'
+      schema:
+        type: string
+      required: true
+  responses:
+    '201':
+      description: 삭제 완료
+    '400':
+      description: Bad request - 해당하는 공지사항이 존재하지 않음
+    '401':
+      description: Unauthorized - 토큰을 검증할 수 없음
