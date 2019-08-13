@@ -1,0 +1,718 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "대마고 대나무숲",
+    "contact": {
+      "email": "by09115@outlook.kr"
+    },
+    "x-logo": {
+      "url": "https://avatars3.githubusercontent.com/u/45446601?s=400&u=4200c4ad7888edffaadc8edb26de7e12b245ed44&v=4"
+    },
+    "description": "대덕소프트웨어마이스터고등학교 대나무숲 페이지의 API 문서입니다.\n"
+  },
+  "tags": [
+    {
+      "name": "Post",
+      "description": "게시글 작성/조회 관련 API"
+    },
+    {
+      "name": "Notice",
+      "description": "공지사항 작성/조회 관련 API"
+    },
+    {
+      "name": "Admin",
+      "description": "관리자 관련 API"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://example.com/api/v1"
+    }
+  ],
+  "paths": {
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "관리자 로그인",
+        "description": "관리자의 authentication을 진행합니다.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by09115@outlook.kr",
+                    "description": "admin email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "p@ssword",
+                    "description": "admin password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Login success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access": {
+                      "type": "string",
+                      "example": "JWT.ACCESS.TOKEN"
+                    },
+                    "refresh": {
+                      "type": "string",
+                      "example": "JWT.REFRESH.TOKEN"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "해당 계정과 일치하는 계정을 찾을 수 없음"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "관리자 회원가입",
+        "description": "관리자 계정을 생성합니다.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "by09115@outlook.kr",
+                    "description": "admin email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "thisIsTrulyStrongP@ssword!123",
+                    "description": "admin password(will be secured.)"
+                  },
+                  "firstname": {
+                    "type": "string",
+                    "example": "재훈",
+                    "description": "admin's firstname"
+                  },
+                  "lastname": {
+                    "type": "string",
+                    "example": "김",
+                    "description": "admin's lastname"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "account created"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "conflict"
+          }
+        }
+      }
+    },
+    "/notices": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "summary": "공지 목록 조회",
+        "description": "공지 목록을 조회합니다.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "idx",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "페이지 인덱스 번호",
+            "example": 3
+          },
+          {
+            "in": "query",
+            "name": "cnt",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "한 페이지에 들어가는 공지사항 게시글의 개수",
+            "example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "공지사항 리스트 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "_notices"
+                  ],
+                  "properties": {
+                    "_posts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "description": "공지사항 ID"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "대마고 대나무숲 오픈 안내",
+                            "description": "게시글 제목"
+                          },
+                          "contents": {
+                            "type": "string",
+                            "example": "입장료는 무료입니다! 마음껏 와서 구경하시오! 훠훠훠",
+                            "description": "게시글 내용"
+                          },
+                          "createdTime": {
+                            "type": "string",
+                            "example": "2015-04-18 00:42:24",
+                            "description": "생성 날짜"
+                          },
+                          "uploadedLink": {
+                            "type": "string",
+                            "example": "https://www.facebook.com/",
+                            "description": "업로드 미이행시 표시되지 않음"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Notice"
+        ],
+        "summary": "공지사항 작성",
+        "description": "공지사항을 작성합니다.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "관리자의 JWT 토큰",
+            "example": "Bearer {}",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "content"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": null,
+                    "description": "대마고 대나무숲 오픈 안내"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "입장료는 무료입니다! 마음껏 와서 구경하시오! 훠훠훠",
+                    "description": "게시글 내용"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "게시글 생성 완료"
+          },
+          "400": {
+            "description": "잘못된 요청"
+          },
+          "401": {
+            "description": "권한 필요"
+          }
+        }
+      }
+    },
+    "/notices/{idx}": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "summary": "단일 공지사항 조회",
+        "description": "공지사항을 조회합니다.",
+        "parameters": [
+          {
+            "name": "idx",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "공지사항 ID",
+            "example": 1,
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1,
+                      "description": "공지사항 ID"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "대마고 대나무숲 오픈 안내",
+                      "description": "게시글 제목"
+                    },
+                    "contents": {
+                      "type": "string",
+                      "example": "입장료는 무료입니다! 마음껏 와서 구경하시오! 훠훠훠",
+                      "description": "게시글 내용"
+                    },
+                    "createdTime": {
+                      "type": "string",
+                      "example": "2015-04-18 00:42:24",
+                      "description": "생성 날짜"
+                    },
+                    "uploadedLink": {
+                      "type": "string",
+                      "example": "https://www.facebook.com/",
+                      "description": "업로드 미이행시 표시되지 않음"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - 해당하는 게시글이 존재하지 않음"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Notice"
+        ],
+        "summary": "공지사항 삭제",
+        "description": "공지사항을 삭제합니다.",
+        "parameters": [
+          {
+            "name": "idx",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "게시글 ID",
+            "example": 1,
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "관리자의 JWT 토큰",
+            "example": "Bearer {}",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "삭제 완료"
+          },
+          "400": {
+            "description": "Bad request - 해당하는 공지사항이 존재하지 않음"
+          },
+          "401": {
+            "description": "Unauthorized - 토큰을 검증할 수 없음"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "게시물 목록 조회",
+        "description": "게시물을 조회합니다.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "idx",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "페이지 인덱스 번호",
+            "example": 3
+          },
+          {
+            "in": "query",
+            "name": "cnt",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "한 페이지에 들어가는 게시글의 개수",
+            "example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시글 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "_posts"
+                  ],
+                  "properties": {
+                    "_posts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1,
+                            "description": "게시글 ID"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "도깨비 빤스는 튼튼해요",
+                            "description": "게시글 제목"
+                          },
+                          "contents": {
+                            "type": "string",
+                            "example": "ㅈㅅ;; 낚시글임",
+                            "description": "게시글 내용"
+                          },
+                          "createdTime": {
+                            "type": "string",
+                            "example": "2015-04-18 00:42:24",
+                            "description": "생성 날짜"
+                          },
+                          "updatedTime": {
+                            "type": "string",
+                            "example": "2015-04-18 00:42:24",
+                            "description": "최근 수정일"
+                          },
+                          "approvedDateTime": {
+                            "type": "string",
+                            "example": "2015-04-18 00:42:24",
+                            "description": "업로드 수락 날짜"
+                          },
+                          "uploadedLink": {
+                            "type": "string",
+                            "example": "https://www.facebook.com/",
+                            "description": "업로드 미이행시 표시되지 않음"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "게시글 작성",
+        "description": "게시글을 작성합니다.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "도깨비 빤스는 튼튼해요",
+                    "description": "게시글 제목"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "ㅈㅅ;; 낚시글임",
+                    "description": "게시글 내용"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "게시글 생성 완료"
+          },
+          "400": {
+            "description": "잘못된 요청"
+          }
+        }
+      }
+    },
+    "/posts/{idx}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "단일 게시글 조회",
+        "description": "게시글을 조회합니다.",
+        "parameters": [
+          {
+            "name": "idx",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "게시글 ID",
+            "example": 1,
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1,
+                      "description": "게시글 ID"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "도깨비 빤스는 튼튼해요",
+                      "description": "게시글 제목"
+                    },
+                    "contents": {
+                      "type": "string",
+                      "example": "ㅈㅅ;; 낚시글임",
+                      "description": "게시글 내용"
+                    },
+                    "createdTime": {
+                      "type": "string",
+                      "example": "2015-04-18 00:42:24",
+                      "description": "생성 날짜"
+                    },
+                    "updatedTime": {
+                      "type": "string",
+                      "example": "2015-04-18 00:42:24",
+                      "description": "최근 수정일"
+                    },
+                    "approvedDateTime": {
+                      "type": "string",
+                      "example": "2015-04-18 00:42:24",
+                      "description": "업로드 수락 날짜"
+                    },
+                    "uploadedLink": {
+                      "type": "string",
+                      "example": "https://www.facebook.com/",
+                      "description": "업로드 미이행시 표시되지 않음"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - 해당하는 게시글이 존재하지 않음"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "게시글 삭제",
+        "description": "게시글을 삭제합니다.",
+        "parameters": [
+          {
+            "name": "idx",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "게시글 ID",
+            "example": 1,
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "관리자의 JWT 토큰",
+            "example": "Bearer {}",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "삭제 완료"
+          },
+          "400": {
+            "description": "Bad request - 해당하는 게시글이 존재하지 않음"
+          },
+          "401": {
+            "description": "Unauthorized - 토큰을 검증할 수 없음"
+          }
+        }
+      }
+    },
+    "/posts/{idx}/approve": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "게시글 업로드 수락",
+        "description": "게시글의 페이스북 업로드를 수락합니다.",
+        "parameters": [
+          {
+            "name": "idx",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "게시글 ID",
+            "example": 1,
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "description": "관리자의 신원을 확인하기 위한 JWT 토큰",
+            "example": "Bearer {}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "게시글이 페이스북에 업로드됨"
+          },
+          "400": {
+            "description": "Bad request - 해당하는 게시글이 존재하지 않음"
+          },
+          "401": {
+            "description": "Unauthorized - 토큰을 검증할 수 없음"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Email": {
+        "description": "User email address",
+        "type": "string",
+        "format": "test",
+        "example": "john.smith@example.com"
+      }
+    },
+    "headers": {
+      "ExpiresAfter": {
+        "description": "date in UTC when token expires",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api_key"
+      },
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "main_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://example.com/api/oauth/dialog",
+            "scopes": {
+              "read:users": "read users info",
+              "write:users": "modify or remove users"
+            }
+          }
+        }
+      }
+    }
+  }
+}

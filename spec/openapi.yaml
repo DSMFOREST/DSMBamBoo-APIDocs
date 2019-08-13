@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: 대마고 대나무숲
+  contact:
+    email: by09115@outlook.kr
+  x-logo:
+    url: >-
+      https://avatars3.githubusercontent.com/u/45446601?s=400&u=4200c4ad7888edffaadc8edb26de7e12b245ed44&v=4
+  description: |
+    대덕소프트웨어마이스터고등학교 대나무숲 페이지의 API 문서입니다.
+tags:
+  - name: Post
+    description: 게시글 작성/조회 관련 API
+  - name: Notice
+    description: 공지사항 작성/조회 관련 API
+  - name: Admin
+    description: 관리자 관련 API
+servers:
+  - url: 'http://example.com/api/v1'
