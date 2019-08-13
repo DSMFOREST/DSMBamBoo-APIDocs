@@ -20,7 +20,7 @@ get:
       required: true
   responses:
     '201':
-      description: 게시글이 페이스북에 업로드됨
+      description: 승인된 게시글이 페이스북에 업로드됨
     '400':
       description: Bad request - 해당하는 게시글이 존재하지 않음
     '401':
