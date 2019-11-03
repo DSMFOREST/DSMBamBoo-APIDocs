@@ -1,0 +1,37 @@
+post:
+  tags:
+    - Notice
+  summary: 공지사항 작성
+  description: 공지사항을 작성합니다.
+  parameters:
+    - name: Authorization
+      in: header
+      description: 관리자의 JWT 토큰
+      example: 'Bearer {}'
+      schema:
+        type: string
+      required: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - title
+            - content
+          properties:
+            title:
+              type: string
+              example: null
+              description: 대마고 대나무숲 오픈 안내
+            content:
+              type: string
+              example: 입장료는 무료입니다! 마음껏 와서 구경하시오! 훠훠훠
+              description: 게시글 내용
+  responses:
+    '201':
+      description: 게시글 생성 완료
+    '400':
+      description: 잘못된 요청
+    '401':
+      description: 권한 필요

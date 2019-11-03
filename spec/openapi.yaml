@@ -10,7 +10,7 @@ info:
   description: |
     대덕소프트웨어마이스터고등학교 대나무숲 페이지의 API 문서입니다.
 tags:
-  - name: Post
+  - name: Story
     description: 게시글 작성/조회 관련 API
   - name: Notice
     description: 공지사항 작성/조회 관련 API

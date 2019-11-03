@@ -1,4 +1,4 @@
-get:
+patch:
   tags:
     - Post
   summary: 게시글 업로드 수락

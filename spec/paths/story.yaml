@@ -1,0 +1,26 @@
+post:
+  tags:
+    - Story
+  summary: 게시글 작성
+  description: 게시글을 작성합니다.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - title
+          properties:
+            title:
+              type: string
+              example: 도깨비 빤스는 튼튼해요
+              description: 게시글 제목
+            content:
+              type: string
+              example: ㅈㅅ;; 낚시글임
+              description: 게시글 내용
+  responses:
+    '201':
+      description: 게시글 생성 완료
+    '400':
+      description: 잘못된 요청
